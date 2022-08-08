@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+require('dotenv').config();//requiero de la configuracion digo que archivo voy a trabajar
+var pool = require ('./models/bd'); 
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -21,6 +24,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+//selector podes usar todo el select, from y where
+pool.query('select nombre,apellido from empleados where salario > 90000 and edad < 30').then (function(resultados){
+  console.log(resultados);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
